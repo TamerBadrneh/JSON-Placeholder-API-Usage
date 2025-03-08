@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Placeholder API Usage</title>
+
+    <!-- Icon -->
+    <link rel="icon" href="./public/icon.png" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+    <!-- Fonts - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="font-[poppins] bg-[#EEE] text-[#222831]">
+    <div
+      class="h-screen w-3/4 flex flex-col justify-center items-center mx-auto"
+    >
+      <header class="h-1/4 flex flex-col justify-center items-center mx-auto">
+        <h1 class="font-semibold text-4xl">
+          <span class="text-[#00ADB5]">JSON</span> Placeholder
+        </h1>
+        <p class="font-light text-sm">
+          A Solution for Tarmeez Academy API Challege
+        </p>
+      </header>
+      <main class="h-3/4 grid grid-cols-12 gap-12">
+        <section class="col-span-4">
+          <h2
+            class="font-semibold text-2xl hover:text-[#00ADB5] transition-all duration-300"
+          >
+            Users
+          </h2>
+          <div id="users-container" class="flex flex-col gap-3 my-3"></div>
+        </section>
+        <section class="col-span-8">
+          <h2
+            class="font-semibold text-2xl hover:text-[#00ADB5] transition-all duration-300"
+          >
+            Posts
+          </h2>
+          <div id="posts-container" class="flex flex-col gap-3 my-3">
+            <p class="flex justify-center items-center">
+              Select a user to dsiplay his/her posts
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+  <script src="./scripts/components.js"></script>
+  <script src="./scripts/display.js"></script>
+  <script src="./scripts/main.js"></script>
+  <script>
+    handleGetRequest(
+      "https://jsonplaceholder.typicode.com/users",
+      (request) => {
+        onLoading(request, "users-container", user);
+        addUserClickEvent(request.response);
+      }
+    );
+  </script>
+</html>
