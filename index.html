@@ -32,7 +32,7 @@
         </p>
       </header>
       <main class="h-3/4 grid grid-cols-12 gap-12">
-        <section class="col-span-4">
+        <section class="col-span-6">
           <h2
             class="font-semibold text-2xl hover:text-[#00ADB5] transition-all duration-300"
           >
@@ -40,7 +40,7 @@
           </h2>
           <div id="users-container" class="flex flex-col gap-3 my-3"></div>
         </section>
-        <section class="col-span-8">
+        <section class="col-span-6">
           <h2
             class="font-semibold text-2xl hover:text-[#00ADB5] transition-all duration-300"
           >
@@ -55,16 +55,8 @@
       </main>
     </div>
   </body>
+  <script src="./scripts/constants.js"></script>
   <script src="./scripts/components.js"></script>
   <script src="./scripts/display.js"></script>
   <script src="./scripts/main.js"></script>
-  <script>
-    handleGetRequest(
-      "https://jsonplaceholder.typicode.com/users",
-      (request) => {
-        onLoading(request, "users-container", user);
-        addUserClickEvent(request.response);
-      }
-    );
-  </script>
 </html>

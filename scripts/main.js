@@ -1,48 +1,63 @@
 /**
- * Adds a click event listener to each user element in the users array.
- * When a user element is clicked, it sends a GET request to fetch the posts of the corresponding user.
+ * Creates a new Request object with the specified URL, using the GET
+ * method and headers for JSON content.
  *
- * @param {Array} users - An array of user objects. Each user object should have properties: username, email, and id.
- * @returns {void} This function doesn't return a value.
+ * @param {string} url - The URL to which the request is made.
+ * @returns {Request} - A Request object configured with the given URL.
  */
-function addUserClickEvent(users) {
+function requestFactory(url) {
+  return new Request(url, {
+    method: GET,
+    headers: { accept: "application/json", "content-type": "application/json" },
+  });
+}
+
+/**
+ * Makes a GET request to the given url and handles the response by
+ * calling handleResponse.
+ *
+ * @param {string} url - The url to make the request to.
+ */
+function handleGetRequest(url) {
+  const request = requestFactory(url);
+
+  fetch(request)
+    .then((response) => {
+      response.json().then((result) => handleResponse(result, url));
+    })
+    .catch((error) => alert(`Error: ${error}`));
+}
+
+/**
+ * Handles the response from the JSON Placeholder API by displaying the
+ * response in the appropriate container based on the url.
+ *
+ * @param {object} result - The JSON response from the JSON Placeholder API.
+ * @param {string} url - The url of the JSON Placeholder API endpoint that
+ *   was called.
+ */
+function handleResponse(result, url) {
+  if (url.endsWith("/users")) {
+    display(result, "users-container", user);
+    addClickHandler(result);
+  } else if (url.includes("/posts?userId="))
+    display(result, "posts-container", post);
+  else alert(`Error: ${url} is not a valid endpoint. Please try again.`);
+}
+
+/**
+ * Adds a click event listener to each user card that will make a GET
+ * request to the JSON Placeholder API to get all posts for that user
+ * and display them in the posts section.
+ *
+ * @param {array} users - A list of user objects with the following
+ *   properties: username, email, id.
+ */
+function addClickHandler(users) {
   for (let { username, email, id } of users)
     document
       .getElementById(`${username}-${email}`)
-      .addEventListener("click", () => {
-        handleGetRequest(
-          `https://jsonplaceholder.typicode.com/posts?userId=${id}`,
-          (request) => onLoading(request, "posts-container", post)
-        );
-      });
+      .addEventListener("click", () => handleGetRequest(GET_POSTS_URL(id)));
 }
 
-/**
- * Sends a GET request to the specified URL and executes a callback function upon successful response.
- *
- * @param {string} url - The URL to which the GET request is sent.
- * @param {function} onLoadImplementation - The callback function to execute when the request is successfully loaded.
- */
-function handleGetRequest(url, onLoadImplementation) {
-  let request = new XMLHttpRequest();
-  request.open("GET", url);
-  request.responseType = "json";
-  request.onload = () => onLoadImplementation(request);
-  request.send();
-}
-
-/**
- * Handles the loading of an XMLHttpRequest response and displays the result or shows an error.
- *
- * @param {XMLHttpRequest} request - The XMLHttpRequest object containing the response.
- * @param {string} containerId - The ID of the HTML container element where the response will be displayed.
- * @param {Function} componentFunction - A function that generates the HTML component for each item in the response.
- * @returns {void} This function doesn't return a value.
- */
-function onLoading(request, containerId, componentFunction) {
-  if (request.status >= 200 && request.status < 300)
-    display(request.response, containerId, componentFunction);
-  else alert(`Error: ${request.statusText}`);
-}
-
-
+handleGetRequest(GET_USERS_URL);

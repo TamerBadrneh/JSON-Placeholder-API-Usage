@@ -1,15 +1,16 @@
 /**
- * Displays a list of elements in a specified HTML element using a provided component function.
+ * This function takes a list of elements and a component function,
+ * applies the component function to each element in the list, and
+ * then sets the innerHTML of the element with the given id to the
+ * joined string of the results.
  *
- * @param {Array} list - The list of elements to be displayed.
- * @param {string} id - The ID of the HTML element where the list will be displayed.
- * @param {function} component - A function that takes an element from the list and returns a string representing the HTML for that element.
- *
- * @returns {void} This function does not return a value. It modifies the HTML element specified by the `id` parameter.
+ * @param {array} list - The list of elements to display.
+ * @param {string} id - The id of the element to populate.
+ * @param {function} component - The function to use to generate the
+ *   HTML string for each element in the list.
  */
 function display(list, id, component) {
   document.getElementById(id).innerHTML = list
     .map((element) => component(element))
     .join("");
 }
-
